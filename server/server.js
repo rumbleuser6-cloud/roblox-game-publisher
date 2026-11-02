@@ -1,7 +1,10 @@
 
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -11,11 +14,10 @@ app.get("/", (req, res) => {
   });
 });
 
-// Check the format of a Roblox Game ID
 app.post("/api/check-game", (req, res) => {
   const { gameId } = req.body;
 
-  if (!gameId || !/^\d+$/.test(String(gameId))) {
+  if (!gameId || !/^[0-9]+$/.test(String(gameId))) {
     return res.status(400).json({
       success: false,
       message: "Please enter a valid numeric Game ID."
@@ -27,7 +29,7 @@ app.post("/api/check-game", (req, res) => {
     gameId: String(gameId),
     message: "Game ID format accepted.",
     publishingEnabled: false,
-    note: "Roblox authorization and visibility support are not connected."
+    note: "Roblox visibility controls are not connected."
   });
 });
 
